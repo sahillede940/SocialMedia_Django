@@ -1,0 +1,113 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="{% static 'assets/images/favicon.png' %}" rel="icon" type="image/png" />
+    <title>Settings</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}" />
+  </head>
+
+  <body>
+    <div class="container m-auto">
+      <h1 class="text-2xl leading-none text-gray-900 tracking-tight mt-3"><a href="index">Home</a> Account Setting for {{user.username}}</h1>
+      <hr />
+
+      <div class="grid lg:grid-cols-3 mt-12 gap-8">
+        <div>
+          <h3 class="text-xl mb-2">General Settings</h3>
+          <div class="bg-white shadow-md rounded-md overflow-hidden">
+            <div class="bg-gray-50 border-b border-gray-100 flex items-baseline justify-between py-4 px-6">
+              <h2 class="font-semibold text-lg">Users You Follow</h2>
+            </div>
+
+            <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4">
+              {% for user in user_profile.friends.all %}
+              <div class="flex items-center justify-between py-3">
+                <div class="flex flex-1 items-center space-x-4">
+                  <a href="profile">
+                    <img src="{{user.profileimg.url}}" class="bg-gray-200 rounded-full w-10 h-10" />
+                  </a>
+                  <div class="flex flex-col">
+                    <span class="block capitalize font-semibold"> {{user.user.username}} </span>
+                    <span class="block capitalize text-sm"> 320k followers </span>
+                  </div>
+                </div>
+                <form action="add_remove_friend" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="user_id" value="{{ user.id }}" />
+                  <button class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600">Unfollow</button>
+                </form>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <form action="" method="POST" class="bg-white rounded-md lg:shadow-lg shadow col-span-2" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="grid grid-cols-2 gap-3 lg:p-6 p-4">
+            <div>
+              <label for=""> First name</label>
+              <input type="text" value="{{user.first_name}}" class="shadow-none bg-gray-100" />
+            </div>
+            <div>
+              <label for=""> Last name</label>
+              <input type="text" value="{{user.last_name}}" class="shadow-none bg-gray-100" />
+            </div>
+            <div class="col-span-2">
+              <label for="about">Bio</label>
+              <textarea id="about" name="bio" rows="3" class="p-2 shadow-none bg-gray-100">{{user_profile.bio}}</textarea>
+            </div>
+            <div>
+              <label for=""> Location</label>
+              <input type="text" name="location" value="{{user_profile.location}}" class="shadow-none bg-gray-100" />
+            </div>
+            <div class="col-span-2">
+              <label for=""> Profile Pic</label>
+              <div class="flex col-span-2 shadow-none bg-gray-100 p-4">
+                <img width="100px" src="{{ user_profile.profileimg.url }}" alt="User Profile Image" />
+                <input type="file" class="shadow-none flex justify-center " name="image" />
+              </div>
+            </div>
+
+            <!-- <div>
+              <label for=""> Relationship </label>
+              <select id="relationship" name="relationship" class="shadow-none bg-gray-100">
+                <option value="0">None</option>
+                <option value="1">Single</option>
+                <option value="2">In a relationship</option>
+                <option value="3">Married</option>
+                <option value="4">Engaged</option>
+              </select>
+            </div> -->
+          </div>
+
+          <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
+            <button class="p-2 px-4 rounded bg-gray-50 text-red-500">
+              <a href="{% url 'index' %}"> Cancel </a>
+            </button>
+            <button type="submit" class="button bg-blue-700">Save</button>
+          </div>
+        </form>
+      </div>
+      <br />
+    </div>
+
+    <!-- Scripts
+    ================================================== -->
+    <script src="{% static 'assets/js/tippy.all.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/uikit.js' %}"></script>
+    <script src="{% static 'assets/js/simplebar.js' %}"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+
+    <script src="{% static '../../unpkg.com/ionicons%405.2.3/dist/ionicons.js' %}"></script>
+  </body>
+</html>

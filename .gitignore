@@ -1,0 +1,11 @@
+.vscode/
+/env
+db.sqlite3
+__pycache__/
+build/
+
+# Ignore the contents of the "media" folder
+media/*
+
+# Except for the "media" folder itself
+!media/
